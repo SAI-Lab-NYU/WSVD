@@ -1,0 +1,80 @@
+export HF_HOME='path_to_huggingface'
+cd path_to_wsvd/fake_quant
+
+
+SEEDS=(${1:-0})
+BSs=(${2:-64})
+RANKRATIOs=(${3:-0.5})
+wbits=${4:-4}
+bits=${5:-4}
+localft_iters=(${6:-10})
+localft_lrs=(${7:-1e-4})
+taylor_order=(${8:-2})
+qat_lr_R=(${9:-1.0})
+qat_lr_UV=(${10:-1e-6})
+qat_start_iter=(${11:-0.0})
+
+svd_mode="U"
+bsz=64
+
+for localft_iter in "${localft_iters[@]}"; do
+    for localft_lr in "${localft_lrs[@]}"; do
+        for seed in "${SEEDS[@]}"; do
+            for rank_ratio in "${RANKRATIOs[@]}"; do
+                for bs in "${BSs[@]}"; do
+                    echo "Running experiment with bs=${bs}, seed=${seed}"
+                    echo "svd_mode=${svd_mode}, rank_ratio=${rank_ratio}"
+                    python main_llava_next.py \
+                        --model llava-hf/llava-v1.6-vicuna-13b-hf  \
+                        --a_bits "$bits" \
+                        --w_bits "$wbits" \
+                        --k_bits 16 \
+                        --v_bits 16 \
+                        --cal_dataset ScienceQA_Train \
+                        --eval_dataset ScienceQA_TEST \
+                        --tasks None \
+                        --w_clip \
+                        --nsamples "$bs" \
+                        --bs "$bsz" \
+                        --seed "$seed" \
+                        --svd_mode "$svd_mode" \
+                        --svd_modules "qkv" \
+                        --svd_lm_localft \
+                        --localft_iters "$localft_iter" \
+                        --localft_lr "$localft_lr" \
+                        --qat_lr_UV "$qat_lr_UV" \
+                        --qat_lr_R "$qat_lr_R" \
+                        --svd_lm \
+                        --act_aware \
+                        --act_alpha 0.5 \
+                        --taylor_order "$taylor_order" \
+                        --svd_ft_mode "weight" \
+                        --svd_ft_optim "adam" \
+                        --calib_method 'cholesky' \
+                        --rank_ratio "$rank_ratio" \
+                        --weighted_svd \
+                        --is_per_head_svd \
+                        --is_quant_aware_ft \
+                        --is_rank_allocate_ft \
+                        --rotate \
+                        --qat_optim_R \
+                        --qat_param_update_freq 1\
+                        --beta_then_svd \
+                        --qat_L_off \
+                        --qat_start_iter "$qat_start_iter"\
+                        --setting "wsvd/sqa/qat/paramRatio${rank_ratio}${svd_mode}_mean${bs}_${bsz}/ftIter${localft_iter}_ftLr${localft_lr}_qatstart${qat_start_iter}/qat_lr_R${qat_lr_R}_UV${qat_lr_UV}/seed${seed}" \
+                        --use_true_param_ratio \
+                        --grad_info \
+                        --vita_clip_ratio 0.9 \
+                        --vit_module \
+                        --beta_then_svd \
+                        --beta_lr 1.0 \
+                        --beta_epochs 100 \
+                        --w_rtn \
+                        --use_cache True \
+                        --cache_file "../cache_file/llava-next-13b"
+                done
+            done
+        done
+    done
+done
