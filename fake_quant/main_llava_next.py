@@ -112,6 +112,12 @@ def main(args):
     modeldtype = model.dtype
     model.vision_tower.to(modeldtype)
     print(model.vision_tower.dtype)
+    
+    if args.svd_lm and not args.beta_then_svd:
+        # Start the Language Model part first, as svd depends on the concat input of vision and text
+        svd_utils.svd_lm_setup(model, args, tokenizer, image_processor) 
+        # utils.set_seed(args.seed)? do we need this?
+        
     if args.vit_module:
         ### todo add vit learning whole process here
         if not args.vit_online:

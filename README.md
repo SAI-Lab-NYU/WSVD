@@ -1,7 +1,7 @@
 # WSVD: Weighted Low-Rank Approximation for Fast and Efficient Execution of Low-Precision Vision-Language Models
 
 <!-- [arXiv](https://arxiv.org/abs/###) -->
-[OpenReview](https://openreview.net/forum?id=zrmQ4koOw9)
+[arXiv](https://arxiv.org/abs/2604.02570) | [OpenReview](https://openreview.net/forum?id=zrmQ4koOw9)
 
 This repository provides the official implementation of **WSVD**, a method for efficient low-rank approximation for fast and efficient execution of Low-Precision Vision-Language Models (VLMs).
 
@@ -104,14 +104,17 @@ For more usage and custom evaluations, explore the instructions and scripts in [
 - `--qat_lr_UV`: Learning rate for low-rank factors (`U/V`) during local QAT.
 - `--qat_lr_R`: Learning rate for rotation matrix `R` during local QAT.
 
-<!-- ## 📚 Citation
+## 📚 Citation
 
 If WSVD helps your research or applications, please cite our paper:
 
 ```
-@article{
+@inproceedings{wangwsvd,
+  title={WSVD: Weighted Low-Rank Approximation for Fast and Efficient Execution of Low-Precision Vision-Language Models},
+  author={Wang, Haiyu and Wang, Yutong and Jiang, Jack and Zhang, Sai Qian},
+  booktitle={The Fourteenth International Conference on Learning Representations}
 }
-``` -->
+```
 
 ## 🤝 Contributing
 
