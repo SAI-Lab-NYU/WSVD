@@ -74,7 +74,24 @@ Currently released model cache:
 > [**LLaVA-Next 7B**](https://huggingface.co/Etropyyy/wsvd-cache/tree/main/llava-next-7b)  
 > [**LLaVA-Next 13B**](https://huggingface.co/Etropyyy/wsvd-cache/tree/main/llava-next-13b)
 
-To reproduce our main results on ScienceQA with the provided cache files, please refer to the [instruction](script/local_qat/README.md) here.
+To reproduce Table 2 results on ScienceQA with the provided cache files, run:
+```bash
+# Step 1: Download cache files to wsvd/cache_file
+bash use_cache/download_cache.sh
+
+# Step 2: Run WSVD + QAT scripts that use cache
+#
+# In each shell script, replace the placeholders at the top:
+# - Set export HF_HOME='path_to_huggingface'
+# - Set cd path_to_wsvd/fake_quant
+# Then run:
+bash use_cache/wsvd_qat_llava_1.5_7b.sh 0 64 0.5 8 8 150 1e-4 2 1.0 1e-5 0.66666667 
+bash use_cache/wsvd_qat_llava_1.5_13b.sh 0 64 0.5 8 8 150 1e-4 2 1.0 1e-5 0.66666667
+bash use_cache/wsvd_qat_llava_next_7b.sh 0 64 0.5 8 8 150 1e-4 2 1.0 1e-5 0.66666667 
+bash use_cache/wsvd_qat_llava_next_13b.sh 0 64 0.5 8 8 150 1e-4 2 1.0 1e-5 0.66666667
+```
+
+For more information, please refer to the [instruction](script/local_qat/README.md) here.
 
 ### 🏎️ Efficiency
 To evaluate the speedup of our fused Triton kernel over Flash Decoding on RTX 4090/5090 GPUs, run:
