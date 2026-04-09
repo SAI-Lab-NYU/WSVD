@@ -79,7 +79,7 @@ To reproduce Table 2 results on ScienceQA with the provided cache files, run:
 # Step 1: Download cache files to wsvd/cache_file
 bash use_cache/download_cache.sh
 
-# Step 2: Run WSVD + QAT scripts that use cache
+# Step 2: Run WSVD QAT scripts that use downloaded cache
 #
 # In each shell script, replace the placeholders at the top:
 # - Set export HF_HOME='path_to_huggingface'
