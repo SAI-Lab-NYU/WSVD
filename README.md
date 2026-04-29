@@ -25,11 +25,11 @@ This repository provides the official implementation of **WSVD**, a method for e
   WSVD uses element-wise importance to guide local fine-tuning of low-rank factors, then adds quantization-aware training with outlier handling—yielding a low-precision low-rank VLM with only ~1% average accuracy drop vs FP16 while using much smaller cache/params.
 
 - **📊 System-level Triton fusion with Flash Decoding for real latency wins:**  
-  WSVD integrates low-rank reconstruction directly into the flash-decoding fused kernel (no materializing full K/V), translating rank reduction into practical speedups more than 1.8× decoding speedup vs. Flash Decoding.
+  WSVD integrates low-rank reconstruction directly into the flash-decoding fused kernel (no materializing full K/V), translating rank reduction into practical speedups of more than 1.8× decoding speedup vs. Flash Decoding.
 
 ## 🔧 Requirements
 
-This implementation utilize the [myllava](myllava) repository, adapted from the original [LLaVA repo](https://github.com/haotian-liu/LLaVA). Please follow the steps below to set up the environment:
+This implementation utilizes the [myllava](myllava) repository, adapted from the original [LLaVA repo](https://github.com/haotian-liu/LLaVA). Please follow the steps below to set up the environment:
 
 ```bash
 git submodule update --init --recursive
@@ -49,7 +49,7 @@ To evaluate WSVD and reproduce our results, follow the steps below.
 
 ### 📁 Dataset Preparation
 
-Follow guidance to prepare the following datasets:
+Follow the guidance to prepare the following datasets:
 - **ScienceQA** (Train) [LLaVA ScienceQA train](script/setup_sqa_train)
 ```bash  
  # Use the shell script to download and process the calibration data 
@@ -109,7 +109,7 @@ For more usage and custom evaluations, explore the instructions and scripts in [
 - `--nsamples`: Number of samples for SVD calibration. 
 - `--rotate`: Whether we want to rotate the model (apply quarot).
 - `--tasks`: Tasks for LM-Eval.
-- `--cal_dataset`: Calibration dataset for GPTQ quantization/SVD calibration (currently support `ScienceQA_Train`).
+- `--cal_dataset`: Calibration dataset for GPTQ quantization/SVD calibration (currently supports `ScienceQA_Train`).
 - `--eval_dataset`: Evaluation dataset (currently support `ScienceQA_TEST`).
 - `--a_bits`: Number of bits for activation quantization.
 - `--w_bits`: Number of bits for weight quantization.
